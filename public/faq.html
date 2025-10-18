@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FAQ — Traffic QR</title>
+    <meta name="description" content="Frequently asked questions about Traffic QR: how to generate QR codes, download, privacy, and supported fields." />
+    <meta name="keywords" content="traffic qr faq, generate qr help, download qr, qr privacy" />
+    <link rel="canonical" href="https://traffic-issue-solving.vercel.app/faq.html" />
+  </head>
+  <body>
+    <nav aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>FAQ</li>
+      </ol>
+    </nav>
+
+    <main>
+      <h1>Frequently Asked Questions</h1>
+
+      <section>
+        <h2>How do I generate a QR?</h2>
+        <p>Fill the form on the homepage with the driver name, ID/license number, phone and car number. Click "Generate QR" and the QR will appear in the panel. You can then download it as PNG.</p>
+      </section>
+
+      <section>
+        <h2>Is my data stored on the server?</h2>
+        <p>No. All data is generated and stored locally in your browser's localStorage (if you choose to save). We do not send user-entered data to any server.</p>
+      </section>
+
+      <section>
+        <h2>What fields are supported?</h2>
+        <p>Currently: name, ID card/license, phone number, car number. We may expand fields in future versions.</p>
+      </section>
+
+      <section>
+        <h2>Can I edit the QR data later?</h2>
+        <p>Yes — you can change the form values and regenerate or download a new QR.</p>
+      </section>
+
+    </main>
+
+    <!-- FAQ structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I generate a QR?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Fill the form on the homepage with the driver name, ID/license number, phone and car number. Click 'Generate QR' and the QR will appear in the panel."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data stored on the server?",
+          "acceptedAnswer": {"@type": "Answer", "text": "No. All data is generated and stored locally in your browser's localStorage (if you choose to save)."}
+        },
+        {
+          "@type": "Question",
+          "name": "What fields are supported?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Currently: name, ID card/license, phone number, car number."}
+        }
+      ]
+    }
+    </script>
+  </body>
+</html>
