@@ -2,10 +2,9 @@
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import "./style.css";
-import Back from './componenets/Back';
+import Back from "./componenets/Back";
 
-
-const App=() =>{
+const App = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [qrData, setQrData] = useState(""); // State to store QR code data
@@ -39,99 +38,183 @@ const App=() =>{
 
     // Generate QR code for the current user
     const dataString = JSON.stringify(userData);
-    setQrData(dataString); 
-    setIsSubmitted(true); 
+    setQrData(dataString);
+    setIsSubmitted(true);
   };
   const handleAnimationComplete = () => {
-    console.log('All letters have animated!');
+    console.log("All letters have animated!");
   };
-  
 
-  return (  
-
-    
-
-    
+  return (
     <div className="Main-container">
-      {/* FORM CONTAINER */}
-      <div className="form-container">
-                 <h1> User&apos;s Information</h1>
+      <div className="card form-card">
+        <div className="form-header">
+          <div>
+            <h1>Driver Information</h1>
+            <div className="form-sub muted">
+              Enter details to generate a secure QR code
+            </div>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div>
-            <label>Name:</label>
+            <label htmlFor="name">Full name</label>
             <input
-              type="text"
+              id="name"
               name="name"
+              type="text"
               value={userData.name}
               onChange={handleChange}
               required
             />
           </div>
+
           <div>
-            <label>ID Card:</label>
+            <label htmlFor="idCard">ID card</label>
             <input
-              type="number"
+              id="idCard"
               name="idCard"
+              type="text"
               value={userData.idCard}
               onChange={handleChange}
               required
             />
           </div>
+
           <div>
-            
-          </div>
-          <div>
-            <label>Phone Number:</label>
+            <label htmlFor="phone">Phone</label>
             <input
-              type="number"
+              id="phone"
               name="phone"
+              type="tel"
               value={userData.phone}
               onChange={handleChange}
-              maxLength={10}
               required
             />
           </div>
+
           <div>
-            <label>Car Number</label>
+            <label htmlFor="carNumber">Car number</label>
             <input
-              type="text"
+              id="carNumber"
               name="carNumber"
+              type="text"
               value={userData.carNumber}
               onChange={handleChange}
               required
             />
           </div>
-          <div>
-            <label>Lisence Number</label>
+
+          <div className="full">
+            <label htmlFor="lisence">License number</label>
             <input
-              type="number"
+              id="lisence"
               name="lisence"
+              type="text"
               value={userData.lisence}
               onChange={handleChange}
               required
             />
           </div>
 
-          <button type="submit">Submit</button>
+          <div className="actions">
+            <button
+              type="button"
+              className="btn secondary"
+              onClick={() => {
+                setUserData({
+                  name: "",
+                  idCard: "",
+                  email: "",
+                  phone: "",
+                  carNumber: "",
+                  lisence: "",
+                });
+                setIsSubmitted(false);
+                setQrData("");
+              }}
+            >
+              Reset
+            </button>
+            <button type="submit" className="btn">
+              Generate QR
+            </button>
+          </div>
         </form>
       </div>
 
-      {/* QR SECTION */}
-      {isSubmitted && (
-        <div className="QR-container">
-          <div className="qr-code">
-            <QRCode value={qrData}
-             style={{ height: "auto", maxWidth: "10rem", width: "10rem" }}
-            /> {/* Display the QR code */}
+      <div className="card qr-panel">
+        {isSubmitted ? (
+          <>
+            <div className="qr-box">
+              <div
+                style={{
+                  width: 160,
+                  height: 160,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "#fff",
+                  padding: 8,
+                  borderRadius: 8,
+                }}
+              >
+                <QRCode value={qrData} size={144} />
+              </div>
+            </div>
+            <div className="qr-meta center">
+              <div className="title">Scan to view driver info</div>
+              <div className="muted">{userData.name || "—"}</div>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button
+                className="btn"
+                onClick={() => {
+                  // Download QR as PNG
+                  const svg = document.querySelector(".qr-panel svg");
+                  if (!svg) return;
+                  const serializer = new XMLSerializer();
+                  const svgStr = serializer.serializeToString(svg);
+                  const canvas = document.createElement("canvas");
+                  const img = new Image();
+                  const svgBlob = new Blob([svgStr], {
+                    type: "image/svg+xml;charset=utf-8",
+                  });
+                  const url = URL.createObjectURL(svgBlob);
+                  img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    const png = canvas.toDataURL("image/png");
+                    const a = document.createElement("a");
+                    a.href = png;
+                    a.download = (userData.name || "qr") + ".png";
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  };
+                  img.src = url;
+                }}
+              >
+                Download PNG
+              </button>
+              <button
+                className="btn secondary"
+                onClick={() => {
+                  navigator.clipboard && navigator.clipboard.writeText(qrData);
+                }}
+              >
+                Copy data
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="center muted">
+            Your QR will appear here after generating it.
           </div>
-
-          <div className="text-container">
-            <div className="scan">SCAN ME</div>
-            <div className="detail">For Driver</div>
-            <div className="info">Information</div>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
